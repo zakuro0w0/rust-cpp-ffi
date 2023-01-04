@@ -1,7 +1,8 @@
-use std::env;
+extern crate cc;
 
 fn main() {
-    let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    println!("cargo:rustc-link-search={}/target/", project_dir);
-    println!("cargo:rustc-link-lib=ffi");
+    cc::Build::new()
+        .file("src/ffi.c")
+        .include("src")
+        .compile("ffi");
 }
