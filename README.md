@@ -4,6 +4,30 @@
 - [C言語へのFFIを含むRustをWASM化するのは難しすぎる](https://zenn.dev/newgyu/articles/4240df5d2a7d55)
 - [C言語へのFFIを含むRustコードをWASMにする（CMakeを添えて）](https://zenn.dev/newgyu/articles/8bff73505c7b35)
 
+## C++コードをRustからFFIで呼び出す
+### cppコードの関数にはextern "C"を付ける
+- Rust側のexternでC++ライブラリの関数名を再宣言する際、マングルにより修飾された部分も含めて正確に指定する必要がある
+- が、現実的ではないのでマングル修飾が付かないようexternを追加しておく必要がある
+
+```cpp
+extern "C" void hello_world_cpp();
+```
+
+### build.rsのビルド時
+- C言語の書き方に`cpp(true)`と`flag("-std=c++20")`の追加が必要
+
+```rs
+fn main() {
+    // C++言語のコードをビルドする設定
+    cc::Build::new()
+        .cpp(true)
+        .flag("-std=c++20")
+        .file("src/ffi.cpp")
+        .compile("ffi_cpp");
+}
+```
+
+
 ## cc crateを使ってC言語ライブラリのビルドを自動化する場合
 - build.rsにリンク設定を書いたり、直接rustcコマンドを実行する場合は事前にC言語ライブラリをビルドしておかなければならない
 - 面倒なのでcc crateを使ってC言語ソースコードの場所と名前を指定するだけでOKにしておきたい
