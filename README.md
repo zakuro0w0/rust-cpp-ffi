@@ -64,7 +64,7 @@ cargo run
 
 ### 事前にC言語コードから静的ライブラリを作る
 ```
-gcc -fPIC src/ffi.c -o target/libffi.a
+gcc -fPIC -c src/ffi.c -o target/libffi.a
 ```
 
 ### build.rsにC言語ライブラリのリンク設定を書く
@@ -86,7 +86,7 @@ cargo run
 ## コマンドでFFIを実行する場合
 ### C言語コードから静的ライブラリを作る
 ```
-gcc -fPIC src/ffi.c -o target/libffi.a
+gcc -fPIC -c src/ffi.c -o target/libffi.a
 ```
 
 ### C言語ライブラリのリンクを指定しつつRustコードをビルド
